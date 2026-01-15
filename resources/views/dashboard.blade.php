@@ -3,11 +3,10 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    <!-- Page Header -->
-    <div class="page-header d-flex justify-content-between align-items-center">
-        <h1>Dashboard</h1>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-0">
+    {{-- This file has been moved to pages/dashboard.blade.php --}}
+    {{-- Redirecting to the new structure --}}
+    @include('pages.dashboard')
+@endsection
                 <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
                 <li class="breadcrumb-item active">Dashboard</li>
             </ol>

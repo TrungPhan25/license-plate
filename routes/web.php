@@ -1,7 +1,41 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\ViolationController;
 
+// Home page - redirect to dashboard
 Route::get('/', function () {
-    return view('dashboard');
+    return redirect('/dashboard');
+});
+
+// Authentication Routes
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Admin Routes (Protected by auth middleware)
+Route::middleware(['auth'])->group(function () {
+    // Dashboard page
+    Route::get('/dashboard', function () {
+        return view('pages.dashboard');
+    })->name('dashboard');
+
+    // Admin Users Routes
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::resource('users', UserController::class);
+        
+        // Additional User Routes
+        Route::put('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
+        Route::delete('users/{id}/force-delete', [UserController::class, 'forceDelete'])->name('users.force-delete');
+        
+        // Violations Routes
+        Route::resource('violations', ViolationController::class);
+        
+        // Additional Violation Routes
+        Route::get('violations/trash/list', [ViolationController::class, 'trash'])->name('violations.trash');
+        Route::put('violations/{id}/restore', [ViolationController::class, 'restore'])->name('violations.restore');
+        Route::delete('violations/{id}/force-delete', [ViolationController::class, 'forceDelete'])->name('violations.force-delete');
+    });
 });
