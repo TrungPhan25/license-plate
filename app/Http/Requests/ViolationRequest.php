@@ -38,6 +38,7 @@ class ViolationRequest extends FormRequest
             ],
             'address' => ['required', 'string'],
             'violation_type' => ['required', 'string'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];
     }
 
@@ -47,20 +48,23 @@ class ViolationRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'violation_date.required' => 'Ng\u00e0y vi ph\u1ea1m l\u00e0 b\u1eaft bu\u1ed9c.',
-            'violation_date.date' => 'Ng\u00e0y vi ph\u1ea1m kh\u00f4ng \u0111\u00fang \u0111\u1ecbnh d\u1ea1ng.',
-            'violation_date.before_or_equal' => 'Ng\u00e0y vi ph\u1ea1m kh\u00f4ng th\u1ec3 l\u00e0 ng\u00e0y trong t\u01b0\u01a1ng lai.',
-            'license_plate.required' => 'Bi\u1ec3n s\u1ed1 xe l\u00e0 b\u1eaft bu\u1ed9c.',
-            'license_plate.max' => 'Bi\u1ec3n s\u1ed1 xe kh\u00f4ng \u0111\u01b0\u1ee3c v\u01b0\u1ee3t qu\u00e1 20 k\u00fd t\u1ef1.',
-            'license_plate.regex' => 'Bi\u1ec3n s\u1ed1 xe kh\u00f4ng \u0111\u00fang \u0111\u1ecbnh d\u1ea1ng Vi\u1ec7t Nam (V\u00ed d\u1ee5: 59A-123.45).',
-            'full_name.required' => 'H\u1ecd v\u00e0 t\u00ean l\u00e0 b\u1eaft bu\u1ed9c.',
-            'full_name.max' => 'H\u1ecd v\u00e0 t\u00ean kh\u00f4ng \u0111\u01b0\u1ee3c v\u01b0\u1ee3t qu\u00e1 255 k\u00fd t\u1ef1.',
-            'birth_year.required' => 'N\u0103m sinh l\u00e0 b\u1eaft bu\u1ed9c.',
-            'birth_year.integer' => 'N\u0103m sinh ph\u1ea3i l\u00e0 s\u1ed1 nguy\u00ean.',
-            'birth_year.min' => 'N\u0103m sinh ph\u1ea3i l\u1edbn h\u01a1n ho\u1eb7c b\u1eb1ng 1900.',
-            'birth_year.max' => 'N\u0103m sinh kh\u00f4ng th\u1ec3 l\u1edbn h\u01a1n n\u0103m hi\u1ec7n t\u1ea1i.',
-            'address.required' => '\u0110\u1ecba ch\u1ec9 l\u00e0 b\u1eaft bu\u1ed9c.',
-            'violation_type.required' => 'L\u1ed7i vi ph\u1ea1m l\u00e0 b\u1eaft bu\u1ed9c.',
+            'violation_date.required' => 'Ngày vi phạm là bắt buộc.',
+            'violation_date.date' => 'Ngày vi phạm không đúng định dạng.',
+            'violation_date.before_or_equal' => 'Ngày vi phạm không thể là ngày trong tương lai.',
+            'license_plate.required' => 'Biển số xe là bắt buộc.',
+            'license_plate.max' => 'Biển số xe không được vượt quá 20 ký tự.',
+            'license_plate.regex' => 'Biển số xe không đúng định dạng Việt Nam (Ví dụ: 59A-123.45).',
+            'full_name.required' => 'Họ và tên là bắt buộc.',
+            'full_name.max' => 'Họ và tên không được vượt quá 255 ký tự.',
+            'birth_year.required' => 'Năm sinh là bắt buộc.',
+            'birth_year.integer' => 'Năm sinh phải là số nguyên.',
+            'birth_year.min' => 'Năm sinh phải lớn hơn hoặc bằng 1900.',
+            'birth_year.max' => 'Năm sinh không thể lớn hơn năm hiện tại.',
+            'address.required' => 'Địa chỉ là bắt buộc.',
+            'violation_type.required' => 'Lỗi vi phạm là bắt buộc.',
+            'image.image' => 'File phải là hình ảnh.',
+            'image.mimes' => 'Hình ảnh phải có định dạng: jpeg, png, jpg, gif.',
+            'image.max' => 'Hình ảnh không được vượt quá 2MB.',
         ];
     }
 }

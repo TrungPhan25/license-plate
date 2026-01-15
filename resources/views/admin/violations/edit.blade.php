@@ -27,7 +27,7 @@
                     <h5 class="mb-0">Thông tin vi phạm</h5>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.violations.update', $violation) }}" method="POST">
+                    <form action="{{ route('admin.violations.update', $violation) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         
@@ -100,6 +100,24 @@
                             @error('violation_type')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Hình ảnh vi phạm</label>
+                            <input type="file" class="form-control @error('image') is-invalid @enderror" 
+                                   id="image" name="image" accept="image/jpeg,image/png,image/jpg,image/gif">
+                            <small class="form-text text-muted">Chấp nhận định dạng: JPEG, PNG, JPG, GIF. Tối đa 2MB.</small>
+                            @error('image')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <div id="image-preview" class="mt-2" @if(!$violation->image) style="display: none;" @endif>
+                                @if($violation->image)
+                                    <img src="{{ Storage::url($violation->image) }}" alt="Hình ảnh vi phạm" class="img-thumbnail" style="max-height: 200px;">
+                                    <p class="text-muted small mt-1">Ảnh hiện tại. Chọn ảnh mới để thay thế.</p>
+                                @else
+                                    <img src="" alt="Preview" class="img-thumbnail" style="max-height: 200px;">
+                                @endif
+                            </div>
                         </div>
 
                         <div class="d-flex justify-content-between">
@@ -177,6 +195,24 @@
             // Remove any characters that aren't digits, letters, dash, or dot
             value = value.replace(/[^0-9A-Z.-]/g, '');
             this.value = value;
+        });
+
+        // Image preview
+        document.getElementById('image').addEventListener('change', function(e) {
+            const preview = document.getElementById('image-preview');
+            const img = preview.querySelector('img');
+            
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    img.src = event.target.result;
+                    preview.style.display = 'block';
+                    // Remove the text hint if exists
+                    const hint = preview.querySelector('p');
+                    if (hint) hint.textContent = 'Ảnh mới sẽ được lưu khi bạn cập nhật.';
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
         });
     });
 </script>

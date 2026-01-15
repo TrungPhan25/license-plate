@@ -71,6 +71,17 @@
                                 {{ $violation->violation_type }}
                             </div>
                         </div>
+                        @if($violation->image)
+                        <div class="col-12">
+                            <label class="form-label text-muted">Hình ảnh vi phạm</label>
+                            <div>
+                                <a href="{{ Storage::url($violation->image) }}" target="_blank">
+                                    <img src="{{ Storage::url($violation->image) }}" alt="Hình ảnh vi phạm" class="img-fluid img-thumbnail" style="max-height: 300px;">
+                                </a>
+                                <p class="text-muted small mt-1">Nhấn vào ảnh để xem kích thước đầy đủ</p>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>

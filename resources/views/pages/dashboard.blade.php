@@ -227,6 +227,104 @@
         line-height: 1.5;
     }
     
+    /* Violation Image */
+    .violation-image-box {
+        margin-top: 0.75rem;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        background: #f8f9fa;
+    }
+    
+    .violation-image-box .label {
+        font-size: 0.75rem;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 0.75rem 1rem 0.5rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    .violation-image-box .label i {
+        margin-right: 0.35rem;
+        color: #667eea;
+    }
+    
+    .violation-image-box .image-container {
+        position: relative;
+        width: 100%;
+        cursor: pointer;
+    }
+    
+    .violation-image-box .image-container img {
+        width: 100%;
+        height: auto;
+        max-height: 250px;
+        object-fit: cover;
+        display: block;
+    }
+    
+    .violation-image-box .image-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0,0,0,0.6));
+        color: white;
+        padding: 1rem;
+        font-size: 0.8rem;
+        text-align: center;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+    
+    .violation-image-box .image-container:hover .image-overlay {
+        opacity: 1;
+    }
+    
+    /* Image Modal for Mobile */
+    .image-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.9);
+        z-index: 9999;
+        padding: 1rem;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .image-modal.show {
+        display: flex;
+    }
+    
+    .image-modal img {
+        max-width: 100%;
+        max-height: 90vh;
+        object-fit: contain;
+        border-radius: 0.5rem;
+    }
+    
+    .image-modal .close-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        width: 44px;
+        height: 44px;
+        background: rgba(255,255,255,0.2);
+        border: none;
+        border-radius: 50%;
+        color: white;
+        font-size: 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+    
     /* Empty State */
     .empty-state {
         text-align: center;
@@ -372,6 +470,16 @@
         .empty-state, .welcome-state {
             padding: 2rem 1rem;
         }
+        
+        .violation-image-box .image-container img {
+            max-height: 200px;
+        }
+        
+        .violation-image-box .image-overlay {
+            opacity: 1;
+            padding: 0.5rem;
+            font-size: 0.75rem;
+        }
     }
 </style>
 @endsection
@@ -464,6 +572,21 @@
                             </div>
                             <div class="value">{{ $violation->violation_type }}</div>
                         </div>
+                        
+                        @if($violation->image)
+                        <div class="violation-image-box">
+                            <div class="label">
+                                <i class="fas fa-camera"></i>
+                                Hình ảnh vi phạm
+                            </div>
+                            <div class="image-container" onclick="openImageModal('{{ Storage::url($violation->image) }}')">
+                                <img src="{{ Storage::url($violation->image) }}" alt="Hình ảnh vi phạm" loading="lazy">
+                                <div class="image-overlay">
+                                    <i class="fas fa-search-plus me-1"></i> Nhấn để xem ảnh lớn
+                                </div>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
             @endforeach
@@ -501,6 +624,51 @@ document.addEventListener('DOMContentLoaded', function() {
     // Focus on input when page loads (only on desktop)
     if (window.innerWidth > 768) {
         input.focus();
+    }
+});
+
+// Image Modal Functions
+function openImageModal(imageUrl) {
+    // Remove existing modal if any
+    const existingModal = document.getElementById('imageModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // Create modal
+    const modal = document.createElement('div');
+    modal.id = 'imageModal';
+    modal.className = 'image-modal show';
+    modal.innerHTML = `
+        <button class="close-btn" onclick="closeImageModal()">
+            <i class="fas fa-times"></i>
+        </button>
+        <img src="${imageUrl}" alt="Hình ảnh vi phạm">
+    `;
+    
+    // Close on background click
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeImageModal();
+        }
+    });
+    
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+    if (modal) {
+        modal.remove();
+        document.body.style.overflow = '';
+    }
+}
+
+// Close modal on escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeImageModal();
     }
 });
 </script>

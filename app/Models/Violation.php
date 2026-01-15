@@ -22,6 +22,7 @@ class Violation extends Model
         'birth_year',
         'address',
         'violation_type',
+        'image',
     ];
 
     /**

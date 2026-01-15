@@ -8,6 +8,7 @@ use App\Models\Violation;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 
 class ViolationController extends Controller
 {
@@ -55,7 +56,14 @@ class ViolationController extends Controller
      */
     public function store(ViolationRequest $request): RedirectResponse
     {
-        Violation::create($request->validated());
+        $data = $request->validated();
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('violations', 'public');
+        }
+
+        Violation::create($data);
 
         return redirect()->route('admin.violations.index')
             ->with('success', 'Tạo vi phạm thành công!');
@@ -82,7 +90,18 @@ class ViolationController extends Controller
      */
     public function update(ViolationRequest $request, Violation $violation): RedirectResponse
     {
-        $violation->update($request->validated());
+        $data = $request->validated();
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($violation->image) {
+                Storage::disk('public')->delete($violation->image);
+            }
+            $data['image'] = $request->file('image')->store('violations', 'public');
+        }
+
+        $violation->update($data);
 
         return redirect()->route('admin.violations.index')
             ->with('success', 'Cập nhật vi phạm thành công!');
@@ -138,6 +157,12 @@ class ViolationController extends Controller
     public function forceDelete($id): RedirectResponse
     {
         $violation = Violation::withTrashed()->findOrFail($id);
+        
+        // Delete image if exists
+        if ($violation->image) {
+            Storage::disk('public')->delete($violation->image);
+        }
+        
         $violation->forceDelete();
 
         return redirect()->route('admin.violations.trash')

@@ -27,7 +27,7 @@
                     <h5 class="mb-0">Thông tin vi phạm</h5>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.violations.store') }}" method="POST">
+                    <form action="{{ route('admin.violations.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         
                         <div class="row">
@@ -95,6 +95,19 @@
                             @error('violation_type')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Hình ảnh vi phạm</label>
+                            <input type="file" class="form-control @error('image') is-invalid @enderror" 
+                                   id="image" name="image" accept="image/jpeg,image/png,image/jpg,image/gif">
+                            <small class="form-text text-muted">Chấp nhận định dạng: JPEG, PNG, JPG, GIF. Tối đa 2MB.</small>
+                            @error('image')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <div id="image-preview" class="mt-2" style="display: none;">
+                                <img src="" alt="Preview" class="img-thumbnail" style="max-height: 200px;">
+                            </div>
                         </div>
 
                         <div class="d-flex justify-content-between">
@@ -180,6 +193,24 @@
             // Remove any characters that aren't digits, letters, dash, or dot
             value = value.replace(/[^0-9A-Z.-]/g, '');
             this.value = value;
+        });
+
+        // Image preview
+        document.getElementById('image').addEventListener('change', function(e) {
+            const preview = document.getElementById('image-preview');
+            const img = preview.querySelector('img');
+            
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    img.src = event.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            } else {
+                preview.style.display = 'none';
+                img.src = '';
+            }
         });
     });
 </script>
