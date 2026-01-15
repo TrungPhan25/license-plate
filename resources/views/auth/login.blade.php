@@ -114,12 +114,6 @@
                     <i class="fas fa-sign-in-alt me-2"></i>Đăng nhập
                 </button>
             </form>
-
-            <div class="text-center mt-3">
-                <small class="text-muted">
-                    Demo: admin@admin.com / Admin@123
-                </small>
-            </div>
         </div>
     </div>
 
