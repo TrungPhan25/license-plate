@@ -1,171 +1,507 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
+@section('title', 'Tra cứu vi phạm giao thông')
 
-@section('content')
-    <!-- Page Header -->
-    <div class="page-header">
-        <div class="row align-items-center">
-            <div class="col">
-                <h1 class="h3 mb-0">Dashboard</h1>
-                <p class="text-muted mb-0">Tổng quan hệ thống quản lý biển số xe</p>
-            </div>
-            <div class="col-auto">
-                <button type="button" class="btn btn-primary">
-                    <i class="fas fa-plus me-1"></i>
-                    Thêm mới
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Dashboard Content -->
-    <div class="row">
-        <!-- Statistics Cards -->
-        <div class="col-lg-3 col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col">
-                            <h6 class="card-title text-uppercase text-muted mb-2">Tổng biển số</h6>
-                            <span class="h2 mb-0">1,247</span>
-                        </div>
-                        <div class="col-auto">
-                            <div class="icon icon-shape bg-primary text-white rounded-circle">
-                                <i class="fas fa-car"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col">
-                            <h6 class="card-title text-uppercase text-muted mb-2">Hôm nay</h6>
-                            <span class="h2 mb-0">89</span>
-                        </div>
-                        <div class="col-auto">
-                            <div class="icon icon-shape bg-success text-white rounded-circle">
-                                <i class="fas fa-calendar-day"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col">
-                            <h6 class="card-title text-uppercase text-muted mb-2">Camera hoạt động</h6>
-                            <span class="h2 mb-0">12</span>
-                        </div>
-                        <div class="col-auto">
-                            <div class="icon icon-shape bg-warning text-white rounded-circle">
-                                <i class="fas fa-camera"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col">
-                            <h6 class="card-title text-uppercase text-muted mb-2">Cảnh báo</h6>
-                            <span class="h2 mb-0">3</span>
-                        </div>
-                        <div class="col-auto">
-                            <div class="icon icon-shape bg-danger text-white rounded-circle">
-                                <i class="fas fa-exclamation-triangle"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Recent Activity -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Hoạt động gần đây</h5>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Thời gian</th>
-                                    <th>Biển số</th>
-                                    <th>Camera</th>
-                                    <th>Trạng thái</th>
-                                    <th>Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{{ now()->format('H:i:s') }}</td>
-                                    <td><span class="badge bg-light text-dark font-monospace">29A-12345</span></td>
-                                    <td>Camera 1</td>
-                                    <td><span class="badge bg-success">Thành công</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>{{ now()->subMinutes(5)->format('H:i:s') }}</td>
-                                    <td><span class="badge bg-light text-dark font-monospace">30G-67890</span></td>
-                                    <td>Camera 2</td>
-                                    <td><span class="badge bg-success">Thành công</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>{{ now()->subMinutes(10)->format('H:i:s') }}</td>
-                                    <td><span class="badge bg-light text-dark font-monospace">51A-11111</span></td>
-                                    <td>Camera 3</td>
-                                    <td><span class="badge bg-warning">Cảnh báo</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-@endsection
-
-@push('styles')
+@section('styles')
 <style>
-    .icon-shape {
-        width: 48px;
-        height: 48px;
-        display: inline-flex;
+    .search-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 1rem;
+        padding: 2rem 1.5rem;
+        color: white;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+    }
+    
+    .search-hero h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .search-hero p {
+        opacity: 0.9;
+        margin-bottom: 1.5rem;
+        font-size: 0.95rem;
+    }
+    
+    .search-box {
+        position: relative;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    
+    .search-box input {
+        width: 100%;
+        padding: 1rem 1.25rem;
+        padding-right: 3.5rem;
+        border: none;
+        border-radius: 3rem;
+        font-size: 1.1rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 600;
+    }
+    
+    .search-box input::placeholder {
+        text-transform: none;
+        letter-spacing: normal;
+        font-weight: 400;
+        color: #adb5bd;
+    }
+    
+    .search-box input:focus {
+        outline: none;
+        box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2);
+    }
+    
+    .search-box .btn-search {
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        display: flex;
         align-items: center;
         justify-content: center;
+        transition: transform 0.2s ease;
+    }
+    
+    .search-box .btn-search:hover {
+        transform: translateY(-50%) scale(1.05);
+    }
+    
+    .search-box .btn-search:active {
+        transform: translateY(-50%) scale(0.95);
+    }
+    
+    .search-hint {
+        font-size: 0.8rem;
+        opacity: 0.8;
+        margin-top: 0.75rem;
+    }
+    
+    .search-hint i {
+        margin-right: 0.25rem;
+    }
+    
+    /* Results Section */
+    .results-section {
+        margin-top: 1rem;
+    }
+    
+    .results-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+    
+    .results-count {
+        font-weight: 600;
+        color: #495057;
+    }
+    
+    .results-count span {
+        color: #667eea;
+    }
+    
+    /* Violation Card */
+    .violation-card {
+        background: white;
+        border-radius: 1rem;
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        border-left: 4px solid #dc3545;
+        transition: all 0.2s ease;
+    }
+    
+    .violation-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    }
+    
+    .violation-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+    
+    .license-plate-badge {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        font-family: 'SFMono-Regular', Consolas, monospace;
+        font-weight: 700;
+        font-size: 1.1rem;
+        letter-spacing: 0.05em;
+        box-shadow: 0 2px 8px rgba(30, 60, 114, 0.3);
+    }
+    
+    .violation-date {
+        font-size: 0.85rem;
+        color: #6c757d;
+        text-align: right;
+    }
+    
+    .violation-date i {
+        margin-right: 0.25rem;
+    }
+    
+    .violation-body {
+        display: grid;
+        gap: 0.75rem;
+    }
+    
+    .violation-info {
+        display: flex;
+        align-items: flex-start;
+    }
+    
+    .violation-info .icon {
+        width: 32px;
+        height: 32px;
+        background: #f8f9fa;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 0.75rem;
+        flex-shrink: 0;
+        color: #667eea;
+    }
+    
+    .violation-info .content {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .violation-info .label {
+        font-size: 0.75rem;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.15rem;
+    }
+    
+    .violation-info .value {
+        font-weight: 500;
+        color: #212529;
+        word-break: break-word;
+    }
+    
+    .violation-type-box {
+        background: #fff5f5;
+        border-radius: 0.75rem;
+        padding: 1rem;
+        margin-top: 0.5rem;
+    }
+    
+    .violation-type-box .label {
+        font-size: 0.75rem;
+        color: #dc3545;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.35rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    .violation-type-box .label i {
+        margin-right: 0.35rem;
+    }
+    
+    .violation-type-box .value {
+        font-weight: 500;
+        color: #842029;
+        line-height: 1.5;
+    }
+    
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1.5rem;
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+    
+    .empty-state .icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        color: white;
+        font-size: 2rem;
+    }
+    
+    .empty-state.no-result .icon {
+        background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+    }
+    
+    .empty-state h3 {
         font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #212529;
+    }
+    
+    .empty-state p {
+        color: #6c757d;
+        margin-bottom: 0;
+    }
+    
+    /* Welcome State */
+    .welcome-state {
+        text-align: center;
+        padding: 2rem 1.5rem;
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+    
+    .welcome-state .icon {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        color: white;
+        font-size: 1.75rem;
+    }
+    
+    .welcome-state h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #212529;
+    }
+    
+    .welcome-state p {
+        color: #6c757d;
+        margin-bottom: 0;
+        font-size: 0.9rem;
+    }
+    
+    /* Loading State */
+    .loading-spinner {
+        display: none;
+        text-align: center;
+        padding: 2rem;
+    }
+    
+    .loading-spinner.show {
+        display: block;
+    }
+    
+    .spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #667eea;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1rem;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    /* Mobile Optimizations */
+    @media (max-width: 575.98px) {
+        .search-hero {
+            padding: 1.5rem 1rem;
+            border-radius: 0.75rem;
+            margin: -1rem -1rem 1rem -1rem;
+            border-radius: 0 0 1rem 1rem;
+        }
+        
+        .search-hero h1 {
+            font-size: 1.25rem;
+        }
+        
+        .search-hero p {
+            font-size: 0.875rem;
+        }
+        
+        .search-box input {
+            padding: 0.875rem 1rem;
+            padding-right: 3rem;
+            font-size: 1rem;
+        }
+        
+        .search-box .btn-search {
+            width: 38px;
+            height: 38px;
+        }
+        
+        .violation-card {
+            padding: 1rem;
+        }
+        
+        .license-plate-badge {
+            font-size: 1rem;
+            padding: 0.4rem 0.75rem;
+        }
+        
+        .violation-info .icon {
+            width: 28px;
+            height: 28px;
+            font-size: 0.8rem;
+        }
+        
+        .empty-state, .welcome-state {
+            padding: 2rem 1rem;
+        }
     }
 </style>
-@endpush
+@endsection
+
+@section('content')
+<!-- Search Hero Section -->
+<div class="search-hero">
+    <h1><i class="fas fa-car me-2"></i>Tra cứu vi phạm giao thông</h1>
+    <p>Nhập biển số xe để kiểm tra thông tin vi phạm</p>
+    
+    <form id="searchForm" method="GET" action="{{ route('dashboard') }}">
+        <div class="search-box">
+            <input 
+                type="text" 
+                name="license_plate" 
+                id="licensePlateInput"
+                placeholder="Nhập biển số xe, VD: 29A-12345" 
+                value="{{ request('license_plate') }}"
+                autocomplete="off"
+                autocapitalize="characters"
+            >
+            <button type="submit" class="btn-search">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </form>
+    
+    <div class="search-hint">
+        <i class="fas fa-info-circle"></i> Hỗ trợ tìm kiếm một phần biển số
+    </div>
+</div>
+
+<!-- Results Section -->
+<div class="results-section">
+    @if(request('license_plate'))
+        @if(isset($violations) && $violations->count() > 0)
+            <div class="results-header">
+                <div class="results-count">
+                    Tìm thấy <span>{{ $violations->count() }}</span> vi phạm
+                </div>
+            </div>
+            
+            @foreach($violations as $violation)
+                <div class="violation-card">
+                    <div class="violation-header">
+                        <div class="license-plate-badge">
+                            {{ $violation->license_plate }}
+                        </div>
+                        <div class="violation-date">
+                            <i class="far fa-calendar-alt"></i>
+                            {{ $violation->violation_date->format('d/m/Y') }}
+                        </div>
+                    </div>
+                    
+                    <div class="violation-body">
+                        <div class="violation-info">
+                            <div class="icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="content">
+                                <div class="label">Họ và tên</div>
+                                <div class="value">{{ $violation->full_name }}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="violation-info">
+                            <div class="icon">
+                                <i class="fas fa-birthday-cake"></i>
+                            </div>
+                            <div class="content">
+                                <div class="label">Năm sinh</div>
+                                <div class="value">{{ $violation->birth_year }} ({{ $violation->age }} tuổi)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="violation-info">
+                            <div class="icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="content">
+                                <div class="label">Địa chỉ</div>
+                                <div class="value">{{ $violation->address }}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="violation-type-box">
+                            <div class="label">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Nội dung vi phạm
+                            </div>
+                            <div class="value">{{ $violation->violation_type }}</div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        @else
+            <div class="empty-state no-result">
+                <div class="icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>Không tìm thấy vi phạm</h3>
+                <p>Biển số <strong>{{ request('license_plate') }}</strong> không có trong hệ thống<br>hoặc chưa có vi phạm được ghi nhận</p>
+            </div>
+        @endif
+    @else
+        <div class="welcome-state">
+            <div class="icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>Tra cứu nhanh chóng & chính xác</h3>
+            <p>Nhập biển số xe vào ô tìm kiếm phía trên để kiểm tra thông tin vi phạm giao thông</p>
+        </div>
+    @endif
+</div>
+@endsection
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const input = document.getElementById('licensePlateInput');
+    
+    // Auto uppercase for license plate
+    input.addEventListener('input', function() {
+        this.value = this.value.toUpperCase();
+    });
+    
+    // Focus on input when page loads (only on desktop)
+    if (window.innerWidth > 768) {
+        input.focus();
+    }
+});
+</script>
+@endsection

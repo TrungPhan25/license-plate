@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ViolationController;
+use App\Models\Violation;
 
 // Home page - redirect to dashboard
 Route::get('/', function () {
@@ -17,9 +18,18 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Admin Routes (Protected by auth middleware)
 Route::middleware(['auth'])->group(function () {
-    // Dashboard page
+    // Dashboard page with search functionality
     Route::get('/dashboard', function () {
-        return view('pages.dashboard');
+        $violations = null;
+        
+        if (request('license_plate')) {
+            $licensePlate = trim(request('license_plate'));
+            $violations = Violation::byLicensePlate($licensePlate)
+                ->orderBy('violation_date', 'desc')
+                ->get();
+        }
+        
+        return view('pages.dashboard', compact('violations'));
     })->name('dashboard');
 
     // Admin Users Routes

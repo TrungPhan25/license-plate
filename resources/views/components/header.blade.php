@@ -13,11 +13,6 @@
             <button class="btn btn-dark d-lg-none me-2" type="button" id="sidebarToggle">
                 <i class="fas fa-bars"></i>
             </button>
-
-            <!-- Navbar Toggle -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
         </div>
 
         <!-- Navbar Content -->
