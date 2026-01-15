@@ -112,7 +112,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="avatar" class="form-label">Avatar</label>
                                     <input type="file" class="form-control @error('avatar') is-invalid @enderror" 
@@ -122,7 +122,7 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="is_active" class="form-label">Trạng thái</label>
