@@ -38,7 +38,7 @@ class ViolationRequest extends FormRequest
             ],
             'address' => ['required', 'string'],
             'violation_type' => ['required', 'string'],
-            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:5120'],
         ];
     }
 
@@ -64,7 +64,7 @@ class ViolationRequest extends FormRequest
             'violation_type.required' => 'Lỗi vi phạm là bắt buộc.',
             'image.image' => 'File phải là hình ảnh.',
             'image.mimes' => 'Hình ảnh phải có định dạng: jpeg, png, jpg, gif.',
-            'image.max' => 'Hình ảnh không được vượt quá 2MB.',
+            'image.max' => 'Hình ảnh không được vượt quá 5MB.',
         ];
     }
 }

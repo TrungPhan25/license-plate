@@ -101,7 +101,7 @@
                             <label for="image" class="form-label">Hình ảnh vi phạm</label>
                             <input type="file" class="form-control @error('image') is-invalid @enderror" 
                                    id="image" name="image" accept="image/jpeg,image/png,image/jpg,image/gif">
-                            <small class="form-text text-muted">Chấp nhận định dạng: JPEG, PNG, JPG, GIF. Tối đa 2MB.</small>
+                            <small class="form-text text-muted">Chấp nhận định dạng: JPEG, PNG, JPG, GIF. Tối đa 5MB.</small>
                             @error('image')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
