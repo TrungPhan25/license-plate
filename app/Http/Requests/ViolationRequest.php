@@ -27,7 +27,8 @@ class ViolationRequest extends FormRequest
                 'required', 
                 'string', 
                 'max:20',
-                'regex:/^\d{2}[A-Z]-\d{3,4}(\.\d{2})?$/'
+                // Hỗ trợ biển số 1-2 chữ cái: 59A-123.45, 59AB-123.45, 59A-12345, 59AB-12345
+                'regex:/^\d{2}[A-Z]{1,2}-\d{3,5}(\.\d{2})?$/'
             ],
             'full_name' => ['required', 'string', 'max:255'],
             'birth_year' => [
@@ -53,7 +54,7 @@ class ViolationRequest extends FormRequest
             'violation_date.before_or_equal' => 'Ngày vi phạm không thể là ngày trong tương lai.',
             'license_plate.required' => 'Biển số xe là bắt buộc.',
             'license_plate.max' => 'Biển số xe không được vượt quá 20 ký tự.',
-            'license_plate.regex' => 'Biển số xe không đúng định dạng Việt Nam (Ví dụ: 59A-123.45).',
+            'license_plate.regex' => 'Biển số xe không đúng định dạng Việt Nam (Ví dụ: 59A-123.45 hoặc 59AB-123.45).',
             'full_name.required' => 'Họ và tên là bắt buộc.',
             'full_name.max' => 'Họ và tên không được vượt quá 255 ký tự.',
             'birth_year.required' => 'Năm sinh là bắt buộc.',
