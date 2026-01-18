@@ -103,19 +103,44 @@
 
                         <div class="mb-3">
                             <label for="image" class="form-label">Hình ảnh vi phạm</label>
-                            <input type="file" class="form-control @error('image') is-invalid @enderror" 
-                                   id="image" name="image" accept="image/jpeg,image/png,image/jpg,image/gif">
-                            <small class="form-text text-muted">Chấp nhận định dạng: JPEG, PNG, JPG, GIF. Tối đa 5MB.</small>
-                            @error('image')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                            
+                            <!-- Current Image -->
+                            @if($violation->image)
+                            <div id="current-image" class="mb-3">
+                                <img src="{{ Storage::url($violation->image) }}" alt="Hình ảnh vi phạm" class="img-thumbnail" style="max-height: 200px;">
+                                <p class="text-muted small mt-1 mb-0">Ảnh hiện tại. Thêm ảnh mới để thay thế.</p>
+                            </div>
+                            @endif
+                            
+                            <!-- Async Upload Area -->
+                            <div id="upload-area" class="border border-2 border-dashed rounded p-4 text-center" style="cursor: pointer;">
+                                <div id="upload-placeholder">
+                                    <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-2"></i>
+                                    <p class="mb-1">Kéo thả ảnh vào đây hoặc click để chọn</p>
+                                    <small class="text-muted">Chấp nhận: JPEG, PNG, JPG, GIF. Tối đa 10MB.</small>
+                                </div>
+                                <div id="upload-progress" class="d-none">
+                                    <div class="spinner-border text-primary mb-2" role="status">
+                                        <span class="visually-hidden">Đang upload...</span>
+                                    </div>
+                                    <p class="mb-0">Đang upload và nén ảnh...</p>
+                                </div>
+                            </div>
+                            
+                            <input type="file" id="image-file" accept="image/jpeg,image/png,image/jpg,image/gif" class="d-none">
+                            <input type="hidden" name="image_path" id="image-path" value="{{ old('image_path') }}">
+                            
+                            @error('image_path')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
                             @enderror
-                            <div id="image-preview" class="mt-2" @if(!$violation->image) style="display: none;" @endif>
-                                @if($violation->image)
-                                    <img src="{{ Storage::url($violation->image) }}" alt="Hình ảnh vi phạm" class="img-thumbnail" style="max-height: 200px;">
-                                    <p class="text-muted small mt-1">Ảnh hiện tại. Chọn ảnh mới để thay thế.</p>
-                                @else
-                                    <img src="" alt="Preview" class="img-thumbnail" style="max-height: 200px;">
-                                @endif
+                            
+                            <!-- New Image Preview -->
+                            <div id="image-preview" class="mt-3 position-relative" style="display: none;">
+                                <img src="" alt="Preview" class="img-thumbnail" style="max-height: 200px;">
+                                <button type="button" id="remove-image" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                                <div id="image-info" class="small text-success mt-1"></div>
                             </div>
                         </div>
 
@@ -196,21 +221,139 @@
             this.value = value;
         });
 
-        // Image preview
-        document.getElementById('image').addEventListener('change', function(e) {
-            const preview = document.getElementById('image-preview');
-            const img = preview.querySelector('img');
+        // ===== ASYNC IMAGE UPLOAD =====
+        const uploadArea = document.getElementById('upload-area');
+        const uploadPlaceholder = document.getElementById('upload-placeholder');
+        const uploadProgress = document.getElementById('upload-progress');
+        const imageFile = document.getElementById('image-file');
+        const imagePath = document.getElementById('image-path');
+        const imagePreview = document.getElementById('image-preview');
+        const previewImg = imagePreview.querySelector('img');
+        const removeBtn = document.getElementById('remove-image');
+        const imageInfo = document.getElementById('image-info');
+        const currentImage = document.getElementById('current-image');
+
+        // Click to select file
+        uploadArea.addEventListener('click', () => imageFile.click());
+
+        // Drag & Drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('border-primary', 'bg-light');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('border-primary', 'bg-light');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('border-primary', 'bg-light');
+            if (e.dataTransfer.files.length) {
+                handleFileUpload(e.dataTransfer.files[0]);
+            }
+        });
+
+        // File input change
+        imageFile.addEventListener('change', (e) => {
+            if (e.target.files.length) {
+                handleFileUpload(e.target.files[0]);
+            }
+        });
+
+        // Upload file
+        async function handleFileUpload(file) {
+            // Validate file type
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Chỉ chấp nhận định dạng: JPEG, PNG, JPG, GIF.');
+                return;
+            }
+
+            // Validate file size (10MB)
+            if (file.size > 10 * 1024 * 1024) {
+                alert('Dung lượng ảnh tối đa 10MB.');
+                return;
+            }
+
+            // Show progress
+            uploadPlaceholder.classList.add('d-none');
+            uploadProgress.classList.remove('d-none');
+
+            const formData = new FormData();
+            formData.append('image', file);
+
+            try {
+                const response = await fetch('{{ route("admin.upload.image") }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Save path to hidden input
+                    imagePath.value = data.path;
+                    
+                    // Show preview
+                    previewImg.src = data.url;
+                    imagePreview.style.display = 'block';
+                    uploadArea.style.display = 'none';
+                    
+                    // Hide current image if exists
+                    if (currentImage) {
+                        currentImage.style.display = 'none';
+                    }
+                    
+                    // Show compression info
+                    const originalKB = Math.round(data.original_size / 1024);
+                    const compressedKB = Math.round(data.size / 1024);
+                    const savedPercent = Math.round((1 - data.size / data.original_size) * 100);
+                    imageInfo.innerHTML = `<i class="fas fa-check-circle"></i> Đã nén: ${originalKB}KB → ${compressedKB}KB (giảm ${savedPercent}%)`;
+                } else {
+                    alert(data.message || 'Không thể upload ảnh.');
+                }
+            } catch (error) {
+                console.error('Upload error:', error);
+                alert('Lỗi khi upload ảnh. Vui lòng thử lại.');
+            } finally {
+                uploadPlaceholder.classList.remove('d-none');
+                uploadProgress.classList.add('d-none');
+            }
+        }
+
+        // Remove image
+        removeBtn.addEventListener('click', async () => {
+            const path = imagePath.value;
             
-            if (e.target.files && e.target.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    img.src = event.target.result;
-                    preview.style.display = 'block';
-                    // Remove the text hint if exists
-                    const hint = preview.querySelector('p');
-                    if (hint) hint.textContent = 'Ảnh mới sẽ được lưu khi bạn cập nhật.';
-                };
-                reader.readAsDataURL(e.target.files[0]);
+            if (path) {
+                try {
+                    await fetch('{{ route("admin.upload.image.delete") }}', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({ path: path })
+                    });
+                } catch (e) {
+                    console.error('Delete error:', e);
+                }
+            }
+
+            // Reset UI
+            imagePath.value = '';
+            previewImg.src = '';
+            imagePreview.style.display = 'none';
+            uploadArea.style.display = 'block';
+            imageFile.value = '';
+            
+            // Show current image again if exists
+            if (currentImage) {
+                currentImage.style.display = 'block';
             }
         });
     });

@@ -58,8 +58,22 @@ class ViolationController extends Controller
     {
         $data = $request->validated();
 
-        // Handle image upload
-        if ($request->hasFile('image')) {
+        // Handle async uploaded image (from tmp folder)
+        if ($request->filled('image_path')) {
+            $tmpPath = $request->input('image_path');
+            
+            // Verify file exists in tmp folder
+            if (Storage::disk('public')->exists($tmpPath) && str_starts_with($tmpPath, 'tmp/')) {
+                // Move from tmp to violations folder
+                $filename = basename($tmpPath);
+                $newPath = 'violations/' . $filename;
+                
+                Storage::disk('public')->move($tmpPath, $newPath);
+                $data['image'] = $newPath;
+            }
+        }
+        // Fallback: Handle direct file upload (for backward compatibility)
+        elseif ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('violations', 'public');
         }
 
@@ -92,8 +106,27 @@ class ViolationController extends Controller
     {
         $data = $request->validated();
 
-        // Handle image upload
-        if ($request->hasFile('image')) {
+        // Handle async uploaded image (from tmp folder)
+        if ($request->filled('image_path')) {
+            $tmpPath = $request->input('image_path');
+            
+            // Verify file exists in tmp folder
+            if (Storage::disk('public')->exists($tmpPath) && str_starts_with($tmpPath, 'tmp/')) {
+                // Delete old image if exists
+                if ($violation->image) {
+                    Storage::disk('public')->delete($violation->image);
+                }
+                
+                // Move from tmp to violations folder
+                $filename = basename($tmpPath);
+                $newPath = 'violations/' . $filename;
+                
+                Storage::disk('public')->move($tmpPath, $newPath);
+                $data['image'] = $newPath;
+            }
+        }
+        // Fallback: Handle direct file upload (for backward compatibility)
+        elseif ($request->hasFile('image')) {
             // Delete old image if exists
             if ($violation->image) {
                 Storage::disk('public')->delete($violation->image);
