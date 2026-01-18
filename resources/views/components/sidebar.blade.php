@@ -13,9 +13,15 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('admin/violations*') ? 'active' : '' }}" href="{{ route('admin.violations.index') }}">
+                <a class="nav-link {{ Request::is('admin/violations') || Request::is('admin/violations/*') ? 'active' : '' }}" href="{{ route('admin.violations.index') }}">
                     <i class="fas fa-car"></i>
                     Vi phạm giao thông
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('admin/violations-export*') ? 'active' : '' }}" href="{{ route('admin.violations.export.index') }}">
+                    <i class="fas fa-file-export"></i>
+                    Xuất dữ liệu
                 </a>
             </li>
         </ul>
