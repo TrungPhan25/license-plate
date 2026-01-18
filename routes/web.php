@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ViolationController;
 use App\Http\Controllers\Admin\ViolationExportController;
+use App\Http\Controllers\Admin\ImageUploadController;
 use App\Models\Violation;
 
 // Home page - redirect to dashboard
@@ -53,5 +54,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('violations/trash/list', [ViolationController::class, 'trash'])->name('violations.trash');
         Route::put('violations/{id}/restore', [ViolationController::class, 'restore'])->name('violations.restore');
         Route::delete('violations/{id}/force-delete', [ViolationController::class, 'forceDelete'])->name('violations.force-delete');
+
+        // Async Image Upload Routes
+        Route::post('upload/image', [ImageUploadController::class, 'upload'])->name('upload.image');
+        Route::delete('upload/image', [ImageUploadController::class, 'delete'])->name('upload.image.delete');
     });
 });

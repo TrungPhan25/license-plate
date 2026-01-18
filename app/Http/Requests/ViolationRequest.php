@@ -40,6 +40,7 @@ class ViolationRequest extends FormRequest
             'address' => ['required', 'string'],
             'violation_type' => ['required', 'string'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:5120'],
+            'image_path' => ['nullable', 'string', 'regex:/^tmp\/[a-f0-9-]+\.(jpeg|jpg|png|gif)$/i'],
         ];
     }
 
