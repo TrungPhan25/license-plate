@@ -67,11 +67,10 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-3">
-                                    <label for="birth_year" class="form-label">Năm sinh <span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control @error('birth_year') is-invalid @enderror" 
-                                           id="birth_year" name="birth_year" value="{{ old('birth_year') }}" 
-                                           min="1900" max="{{ date('Y') }}" required>
-                                    @error('birth_year')
+                                    <label for="birth_date" class="form-label">Ngày sinh <span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control @error('birth_date') is-invalid @enderror" 
+                                           id="birth_date" name="birth_date" value="{{ old('birth_date') }}" required>
+                                    @error('birth_date')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -142,7 +141,7 @@
                         </li>
                         <li class="mb-2">
                             <i class="fas fa-birthday-cake text-info me-2"></i>
-                            <strong>Năm sinh:</strong> Từ 1900 đến năm hiện tại
+                            <strong>Ngày sinh:</strong> Ngày tháng năm sinh đầy đủ
                         </li>
                         <li class="mb-0">
                             <i class="fas fa-exclamation-triangle text-warning me-2"></i>

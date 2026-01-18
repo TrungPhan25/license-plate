@@ -39,7 +39,7 @@ class ViolationSeeder extends Seeder
                 'violation_date' => $faker->dateTimeBetween('-6 months', 'now')->format('Y-m-d'),
                 'license_plate' => $prefix . '-' . $number . '.' . $suffix,
                 'full_name' => $faker->name,
-                'birth_year' => $faker->numberBetween(1960, 2000),
+                'birth_date' => $faker->dateTimeBetween('-60 years', '-20 years')->format('Y-m-d'),
                 'address' => $faker->address,
                 'violation_type' => $faker->randomElement($violationTypes),
             ]);

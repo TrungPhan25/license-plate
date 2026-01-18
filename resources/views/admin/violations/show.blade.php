@@ -57,8 +57,8 @@
                             <p class="fw-semibold fs-5">{{ $violation->full_name }}</p>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label class="form-label text-muted">Năm sinh</label>
-                            <p class="fw-semibold">{{ $violation->birth_year }} <small class="text-muted">({{ $violation->age }} tuổi)</small></p>
+                            <label class="form-label text-muted">Ngày sinh</label>
+                            <p class="fw-semibold">{{ $violation->birth_date?->format('d/m/Y') }} <small class="text-muted">({{ $violation->age }} tuổi)</small></p>
                         </div>
                         <div class="col-12 mb-3">
                             <label class="form-label text-muted">Địa chỉ</label>

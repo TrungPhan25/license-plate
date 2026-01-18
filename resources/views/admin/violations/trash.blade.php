@@ -88,7 +88,7 @@
                                             </td>
                                             <td>
                                                 <strong>{{ $violation->full_name }}</strong>
-                                                <br><small class="text-muted">{{ $violation->birth_year }} ({{ $violation->age }} tuổi)</small>
+                                                <br><small class="text-muted">{{ $violation->birth_date?->format('d/m/Y') }} ({{ $violation->age }} tuổi)</small>
                                             </td>
                                             <td>
                                                 <span class="text-truncate d-inline-block" style="max-width: 200px;" 

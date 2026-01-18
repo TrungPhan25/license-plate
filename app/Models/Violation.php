@@ -19,7 +19,7 @@ class Violation extends Model
         'violation_date',
         'license_plate',
         'full_name',
-        'birth_year',
+        'birth_date',
         'address',
         'violation_type',
         'image',
@@ -32,15 +32,15 @@ class Violation extends Model
      */
     protected $casts = [
         'violation_date' => 'date',
-        'birth_year' => 'integer',
+        'birth_date' => 'date',
     ];
 
     /**
-     * Get the age of the person based on birth year.
+     * Get the age of the person based on birth date.
      */
     public function getAgeAttribute(): int
     {
-        return date('Y') - $this->birth_year;
+        return $this->birth_date ? $this->birth_date->age : 0;
     }
 
     /**
