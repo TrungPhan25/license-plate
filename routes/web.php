@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ViolationController;
+use App\Http\Controllers\Admin\ViolationExportController;
 use App\Models\Violation;
 
 // Home page - redirect to dashboard
@@ -42,6 +43,11 @@ Route::middleware(['auth'])->group(function () {
         
         // Violations Routes
         Route::resource('violations', ViolationController::class);
+        
+        // Violations Export Routes
+        Route::get('violations-export', [ViolationExportController::class, 'index'])->name('violations.export.index');
+        Route::get('violations-export/download', [ViolationExportController::class, 'export'])->name('violations.export');
+        Route::get('violations-export/count', [ViolationExportController::class, 'count'])->name('violations.export.count');
         
         // Additional Violation Routes
         Route::get('violations/trash/list', [ViolationController::class, 'trash'])->name('violations.trash');
