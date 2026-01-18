@@ -76,7 +76,7 @@
                                         <th>Ngày vi phạm</th>
                                         <th>Biển số xe</th>
                                         <th>Họ và tên</th>
-                                        <th>Năm sinh</th>
+                                        <th>Ngày sinh</th>
                                         <th>Lỗi vi phạm</th>
                                         <th>Thao tác</th>
                                     </tr>
@@ -96,10 +96,10 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <strong>{{ $violation->full_name }}</strong>
+                                                {{ $violation->full_name }}
                                             </td>
                                             <td>
-                                                {{ $violation->birth_year }}
+                                                {{ $violation->birth_date?->format('d/m/Y') }}
                                                 <small class="text-muted">({{ $violation->age }} tuổi)</small>
                                             </td>
                                             <td>

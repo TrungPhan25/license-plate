@@ -550,8 +550,8 @@
                                 <i class="fas fa-birthday-cake"></i>
                             </div>
                             <div class="content">
-                                <div class="label">Năm sinh</div>
-                                <div class="value">{{ $violation->birth_year }} ({{ $violation->age }} tuổi)</div>
+                                <div class="label">Ngày sinh</div>
+                                <div class="value">{{ $violation->birth_date?->format('d/m/Y') }} ({{ $violation->age }} tuổi)</div>
                             </div>
                         </div>
                         
