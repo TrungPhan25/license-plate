@@ -66,7 +66,7 @@
                         </div>
                         <div class="col-12">
                             <label class="form-label text-muted">Lỗi vi phạm</label>
-                            <div class="alert alert-warning">
+                            <div class="alert alert-warning alert-permanent">
                                 <i class="fas fa-exclamation-triangle me-2"></i>
                                 {{ $violation->violation_type }}
                             </div>
